@@ -9,7 +9,14 @@ my blog
 <div class="container-fluid main">
     <div class="row">
         <div class="col-12">
-            Hello!!!
+            <h3>Выберете город для просмотра погоды</h3>
+            <form method="POST">
+            {% csrf_token %}
+            <table>
+                {{ form }}
+            </table>
+            <input type="submit" value="Выбрать" >
+            </form>
         </div>
     </div>
 </div>
