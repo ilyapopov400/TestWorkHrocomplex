@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %} {% endblock %}</title>
+    <link href="{% static 'app/img/favicon.ico' %}" rel="shortcat icon" type="image/x-icon">
+    <link href="{% static 'app/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'app/css/fontello.css' %}" rel="stylesheet">
+    <link href="{% static 'app/css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+
+<div class="wrapper">
+    {% include 'includes/navbar.html' %}
+    {% include 'includes/header.html' %}
+    {% block content %} {% endblock %}
+    {% include 'includes/footer.html' %}
+</div>
+
+<script src="{% static 'app/js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'app/js/main.js' %}"></script>
+</body>
+</html>
