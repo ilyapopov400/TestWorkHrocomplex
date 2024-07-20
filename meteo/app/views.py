@@ -8,6 +8,7 @@ from django.urls import reverse_lazy, reverse
 
 from . import forms
 from . import models
+from . import get_meteo
 
 
 class Index(View):
@@ -33,15 +34,12 @@ class GetMeteo(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        city = self.kwargs.get("city")
-        citie_date = models.City.objects.filter(city=city)
-        if citie_date:
-            latitud = citie_date[0].latitude
-            longitude = citie_date[0].longitude
-            context['date'] = {
-                "latitud": latitud,  # широта
-                "longitude": longitude,  # долгота
-            }
+        city = self.kwargs.get("city").lower()
+        context['city'] = city
+        temperature_now = get_meteo.Meteo(city=city)  # передали температуру
+        if temperature_now:
+            context['date'] = temperature_now
         else:
             context['date'] = None
+
         return context

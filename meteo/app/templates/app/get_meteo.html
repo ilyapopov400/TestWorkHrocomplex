@@ -11,15 +11,14 @@ my blog
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <h3>Прогноз погоды в выбранном городе {{ city }}</h3>
+                <h3>Прогноз погоды в городе {{ city | capfirst }}</h3>
             </div>
         </div>
     </div>
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <p>широта: {{ date.latitud }}</p>
-                <p>долгота: {{ date.longitude }}</p>
+                <p>Сейчас температура: {{ date }} градусов по Цельсию</p>
             </div>
         </div>
     </div>
