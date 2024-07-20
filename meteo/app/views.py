@@ -7,6 +7,7 @@ from django.urls import reverse_lazy, reverse
 # Create your views here.
 
 from . import forms
+from . import models
 
 
 class Index(View):
@@ -33,6 +34,14 @@ class GetMeteo(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         city = self.kwargs.get("city")
-        print(city)  # TODO передать прогноз погоды для города "city"
-
+        citie_date = models.City.objects.filter(city=city)
+        if citie_date:
+            latitud = citie_date[0].latitude
+            longitude = citie_date[0].longitude
+            context['date'] = {
+                "latitud": latitud,  # широта
+                "longitude": longitude,  # долгота
+            }
+        else:
+            context['date'] = None
         return context
