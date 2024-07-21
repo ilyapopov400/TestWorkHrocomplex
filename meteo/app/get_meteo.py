@@ -4,6 +4,7 @@
 import requests
 
 from . import models
+from . import get_coordinats
 
 
 class Meteo:
@@ -24,8 +25,17 @@ class Meteo:
         if coordinates:
             latitud = self.__conversion_to_number(number=coordinates[0].latitude)  # широта
             longitude = self.__conversion_to_number(number=coordinates[0].longitude)  # долгота
-        else:  # TODO если в БД нет города
-            return False
+        else:  # если в БД нет города
+            try:
+                latitude, longitude = get_coordinats.Coordinates(city=self.city)()
+                models.City.objects.create(
+                    city=self.city.lower(), latitude=latitude, longitude=longitude)
+                return {
+                    "latitud": latitude,
+                    "longitude": longitude,
+                }
+            except:
+                return False
         return {
             "latitud": latitud,
             "longitude": longitude,
@@ -48,4 +58,3 @@ class Meteo:
 if __name__ == "__main__":
     temperature = Meteo(city="москва")()
     print(temperature)
-
