@@ -1,13 +1,12 @@
 import requests
-from .keys import KEY
 
-
-url = "https://catalog.api.2gis.com/3.0/items/geocode?q=город {}&fields=items.point&key={}".format("волгоград", KEY)
-
-response = requests.get(url).json()
+from .keys import KEY  # ключ действителен на месяц до 20 августа 2024 года
 
 
 class Coordinates:
+    """
+    - получение координат города в (float, float) через API
+    """
     key = KEY
     url = "https://catalog.api.2gis.com/3.0/items/geocode?q=город {}&fields=items.point&key={}"
 
@@ -15,19 +14,24 @@ class Coordinates:
         self.city = city
 
     def __date(self):
-        response = requests.get(self.url.format(
-            self.city, self.key
-        )).json()
-        return response
+        try:
+            response = requests.get(self.url.format(
+                self.city, self.key
+            ))
+            return response.json()
+        except:
+            return False
 
     def __call__(self):
         result = self.__date()
-        latitude = result.get("result").get("items")[0].get("point").get("lat")
-        longitude = result.get("result").get("items")[0].get("point").get("lon")
-        return latitude, longitude
+        try:
+            latitude = result.get("result").get("items")[0].get("point").get("lat")
+            longitude = result.get("result").get("items")[0].get("point").get("lon")
+            return latitude, longitude
+        except:
+            return False
 
 
 if __name__ == "__main__":
     date = Coordinates(city="москва")()
     print(date)
-    pass

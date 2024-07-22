@@ -9,6 +9,9 @@ from . import get_coordinats
 
 
 class Meteo:
+    """
+    - получаем данные о погоде через API
+    """
     url = "https://api.open-meteo.com/v1/forecast"
 
     def __init__(self, city: str):
@@ -16,27 +19,30 @@ class Meteo:
 
     def __get_coordinates(self):
         """
+        - получаем словарь с координатами города, если в БД нет города,
+        то через Coordinates получаем их и заносим в БД
         :return: словарь с координатами долготы и широты типа float
         """
+        result = False  # если данных о координатах города нет, то возвращается False
         coordinates = models.City.objects.filter(city=self.city)
         if coordinates:  # если координаты города есть в БД
             latitude = coordinates[0].latitude  # широта
             longitude = coordinates[0].longitude  # долгота
-            return {
+            result = {
                 "latitude": latitude,
                 "longitude": longitude,
             }
         else:  # если в БД нет города
-            try:
-                latitude, longitude = get_coordinats.Coordinates(city=self.city)()  # получаем новые координаты города
+            coordinates_new = get_coordinats.Coordinates(city=self.city)()  # получаем новые координаты города
+            if coordinates_new:
+                latitude, longitude = coordinates_new
                 models.City.objects.create(
                     city=self.city.lower(), latitude=latitude, longitude=longitude)
-                return {
+                result = {
                     "latitude": latitude,
                     "longitude": longitude,
                 }
-            except:
-                return False
+        return result
 
     def __get_temperature(self):
         coordinates = self.__get_coordinates()
