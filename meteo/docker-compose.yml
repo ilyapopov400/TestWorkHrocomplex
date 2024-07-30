@@ -1,14 +1,16 @@
 version: "3.9"
 
 services:
-  web_priject:
+  web_app:
     build:
       dockerfile: Dockerfile
-      context: .
-    image: web_site
+      context: .  # путь к Dockerfile
+    image: meteo
     container_name: www
-    command:
+    command: >
       bash -c "python manage.py runserver 0.0.0.0:8001"
     ports:
       # слева порт на компьютере, справа порт внутри контейнера
       - "8000:8001"
+    volumes:
+      - ./db.sqlite3/:/root/db.sqlite3/
