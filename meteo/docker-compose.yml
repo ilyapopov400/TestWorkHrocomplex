@@ -5,12 +5,12 @@ services:
     build:
       dockerfile: Dockerfile
       context: .  # путь к Dockerfile
-    image: meteo
-    container_name: www
-    command: >
-      bash -c "python manage.py runserver 0.0.0.0:8001"
+    image: meteo  # название образа
+    container_name: www  # название контейнера
     ports:
       # слева порт на компьютере, справа порт внутри контейнера
       - "8000:8001"
     volumes:
       - ./db.sqlite3/:/root/db.sqlite3/
+    command: >
+      bash -c "python manage.py runserver 0.0.0.0:8001"
