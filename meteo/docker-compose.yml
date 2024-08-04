@@ -11,6 +11,7 @@ services:
       # слева порт на компьютере, справа порт внутри контейнера
       - "8000:8001"
     volumes:
-      - ./db.sqlite3/:/root/db.sqlite3/
+      # слева путь к БД на компьютере, справа АБСОЛЮТНЫЙ путь к БД внутри контейнера
+      - ./db.sqlite3:/web/db.sqlite3
     command: >
       bash -c "python manage.py runserver 0.0.0.0:8001"

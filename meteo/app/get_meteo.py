@@ -61,8 +61,10 @@ class Meteo:
 
     def __call__(self):
         date_time_now = datetime.datetime.now().strftime('%Y-%m-%dT%H:00')  # дата и время на сейчас
-        temperature_now = self.__get_temperature().get(date_time_now)
-        return temperature_now
+        if self.__get_temperature():  # если получили данные о температуре
+            temperature_now = self.__get_temperature().get(date_time_now)
+            return temperature_now
+        return False
 
 
 if __name__ == "__main__":
